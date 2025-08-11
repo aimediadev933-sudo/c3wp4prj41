@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RICESTATS DATABASE - Leveraging the Cloud for Rice Statistics and Analytics</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #9A2AA0;
+            --secondary: #DA3FA3;
+            --body: #FCF5EC;
+            --text: #1D1D1B;
+            --secondary-dark: #4E245C;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--body);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 2rem 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .logos {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            height: 60px;
+            width: auto;
+            transition: transform 0.3s ease;
+            background: white;
+            padding: 5px;
+            border-radius: 8px;
+        }
+
+        .logo:hover {
+            transform: scale(1.1);
+        }
+
+        .hero-text h1 {
+            font-size: 2.1rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .hero-text p {
+            font-size: 1.1rem;
+            opacity: 0.95;
+        }
+
+        .hero-badge {
+            background: rgba(255,255,255,0.2);
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            display: inline-block;
+        }
+
+        /* Navigation */
+        nav {
+            background-color: var(--secondary-dark);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-menu {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            transition: background-color 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-menu a:hover {
+            background-color: var(--primary);
+        }
+
+        /* Main Content */
+        main {
+            padding: 3rem 0;
+        }
+
+        .section {
+            margin-bottom: 4rem;
+            background: white;
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            border-left: 5px solid var(--primary);
+        }
+
+        .section h2 {
+            color: var(--secondary-dark);
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            border-radius: 2px;
+        }
+
+        .agriculture-highlight {
+            background: linear-gradient(135deg, #e8f5e8, #d4edda);
+            border-left-color: #28a745;
+            margin: 2rem 0;
+            padding: 1.5rem;
+            border-radius: 10px;
+        }
+
+        .agriculture-highlight h4 {
+            color: #155724;
+            margin-bottom: 0.5rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            transform: translateY(0);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(154, 42, 160, 0.3);
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .cloud-technologies {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .cloud-card {
+            background: linear-gradient(135deg, var(--secondary-dark), #6a3775);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .cloud-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(78, 36, 92, 0.3);
+        }
+
+        .cloud-card h3 {
+            color: var(--secondary);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .cloud-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .aws-platform {
+            background: linear-gradient(135deg, #ff9500, #ff6b1a);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+        }
+
+        .aws-services {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .aws-service {
+            background: rgba(255,255,255,0.1);
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .aws-service:hover {
+            background: rgba(255,255,255,0.2);
+            transform: scale(1.05);
+        }
+
+        .indicators-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .indicator-card {
+            background: var(--body);
+            padding: 1.5rem;
+            border-radius: 10px;
+            border-left: 4px solid var(--primary);
+            transition: all 0.3s ease;
+        }
+
+        .indicator-card:hover {
+            transform: translateX(10px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .indicator-card h4 {
+            color: var(--secondary-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .data-pipeline {
+            background: var(--body);
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+        }
+
+        .pipeline-step {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: white;
+            border-radius: 10px;
+            border-left: 4px solid var(--primary);
+            transition: all 0.3s ease;
+        }
+
+        .pipeline-step:hover {
+            transform: translateX(10px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .step-number {
+            background: var(--primary);
+            color: white;
+            padding: 1rem;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-right: 1.5rem;
+            min-width: 50px;
+            text-align: center;
+        }
+
+        .step-content h4 {
+            color: var(--secondary-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .covid-adaptation {
+            background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+            border-left-color: #fd79a8;
+            margin: 2rem 0;
+            padding: 1.5rem;
+            border-radius: 10px;
+        }
+
+        .covid-adaptation h4 {
+            color: #d63031;
+            margin-bottom: 0.5rem;
+        }
+
+        .partners-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .partner-card {
+            background: var(--body);
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            border: 2px solid var(--primary);
+            transition: all 0.3s ease;
+        }
+
+        .partner-card:hover {
+            background: var(--primary);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .partner-card.lead {
+            background: var(--primary);
+            color: white;
+        }
+
+        .outcomes {
+            background: linear-gradient(135deg, #fff, #e8f5e8);
+            border-left-color: #27ae60;
+        }
+
+        .challenges {
+            background: linear-gradient(135deg, #fff, var(--body));
+            border-left-color: #e74c3c;
+        }
+
+        .philippines-flag {
+            display: inline-block;
+            font-size: 1.2rem;
+            margin-right: 0.5rem;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--secondary-dark);
+            color: white;
+            padding: 3rem 0 1rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            color: var(--secondary);
+            margin-bottom: 1rem;
+        }
+
+        .sdg-badges {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+
+        .sdg-badge {
+            background: var(--primary);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.2);
+            opacity: 0.8;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero-text h1 {
+                font-size: 1.6rem;
+            }
+
+            .hero-text p {
+                font-size: 1rem;
+            }
+
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .logos {
+                justify-content: center;
+            }
+
+            .logo {
+                height: 50px;
+            }
+
+            .nav-menu {
+                gap: 1rem;
+            }
+
+            .section {
+                padding: 1.5rem;
+            }
+
+            .stat-number {
+                font-size: 2rem;
+            }
+
+            .pipeline-step {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .step-number {
+                margin-right: 0;
+                margin-bottom: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            .hero-text h1 {
+                font-size: 1.4rem;
+            }
+
+            .section h2 {
+                font-size: 1.5rem;
+            }
+
+            .logo {
+                height: 40px;
+            }
+
+            .logos {
+                gap: 1rem;
+            }
+        }
+
+        /* Animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .highlight {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logos">
+                    <img src="images/logos/eu-logo.png" alt="European Union" class="logo">
+                    <img src="images/logos/tein-logo.png" alt="TEIN CC" class="logo">
+                    <img src="images/logos/asia-connect-logo.png" alt="Asia Connect" class="logo">
+                </div>
+                <div class="hero-text">
+                    <h1>RICESTATS DATABASE</h1>
+                    <p>Leveraging the Cloud for Rice Statistics and Analytics</p>
+                    <div class="hero-badge"><span class="philippines-flag">🇵🇭</span>Philippines • 3rd Call • AWS Cloud Platform</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <nav>
+        <div class="container">
+            <ul class="nav-menu">
+                <li><a href="#overview">Overview</a></li>
+                <li><a href="#platform">Cloud Platform</a></li>
+                <li><a href="#analytics">Analytics</a></li>
+                <li><a href="#outcomes">Outcomes</a></li>
+                <li><a href="#partners">Partners</a></li>
+                <li><a href="#future">Future</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container">
+        <section id="overview" class="section">
+            <h2>Project Overview</h2>
+            <p>RICESTATS addressed a key gap in global rice research and policymaking by developing a centralized, searchable, and publicly accessible database of rice socio-economic data. Using <span class="highlight">AWS cloud infrastructure and Qlik Sense analytics</span>, the project created a standardized platform for rice statistics, indicators, and evidence-based decision-making across Asia and beyond.</p>
+            
+            <div class="agriculture-highlight">
+                <h4>🌾 Global Food Security Impact</h4>
+                <p>This platform supports researchers, policymakers, and educators by providing standardized rice data critical for addressing food security challenges and agricultural development across Asia.</p>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">5</div>
+                    <div>Surveys Integrated</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">15</div>
+                    <div>Key Indicators</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">25+</div>
+                    <div>Participants Trained</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">100%</div>
+                    <div>AWS Cloud Training</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="platform" class="section">
+            <h2>AWS Cloud Infrastructure</h2>
+            <div class="cloud-technologies">
+                <div class="cloud-card">
+                    <div class="cloud-icon">🗄️</div>
+                    <h3>Data Storage & Processing</h3>
+                    <p>AWS S3 for data lake storage with Athena for serverless SQL queries and data analysis</p>
+                </div>
+                <div class="cloud-card">
+                    <div class="cloud-icon">🔄</div>
+                    <h3>ETL Pipeline</h3>
+                    <p>AWS Glue for automated extract, transform, and load operations from multiple survey sources</p>
+                </div>
+                <div class="cloud-card">
+                    <div class="cloud-icon">📊</div>
+                    <h3>Data Visualization</h3>
+                    <p>Qlik Sense dashboards for interactive analytics and user-friendly data exploration</p>
+                </div>
+                <div class="cloud-card">
+                    <div class="cloud-icon">🔗</div>
+                    <h3>Ontology Integration</h3>
+                    <p>SEOnt socio-economic ontology for standardized variable mapping across datasets</p>
+                </div>
+                <div class="cloud-card">
+                    <div class="cloud-icon">🌐</div>
+                    <h3>Public Access Interface</h3>
+                    <p>Web-based platform for researchers and policymakers to access rice statistics</p>
+                </div>
+                <div class="cloud-card">
+                    <div class="cloud-icon">📈</div>
+                    <h3>Real-time Analytics</h3>
+                    <p>Dynamic indicators for yield gap, genetic diversity, and fertilizer efficiency</p>
+                </div>
+            </div>
+
+            <div class="aws-platform">
+                <h3>☁️ Amazon Web Services Technology Stack</h3>
+                <p>Comprehensive cloud infrastructure powering the RICESTATS platform:</p>
+                <div class="aws-services">
+                    <div class="aws-service">AWS S3</div>
+                    <div class="aws-service">AWS Glue</div>
+                    <div class="aws-service">AWS Athena</div>
+                    <div class="aws-service">Qlik Sense</div>
+                    <div class="aws-service">ETL Pipeline</div>
+                    <div class="aws-service">Data Lake</div>
+                    <div class="aws-service">Serverless SQL</div>
+                    <div class="aws-service">Smart Cities Network</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="analytics" class="section">
+            <h2>Rice Analytics & Indicators</h2>
+            <div class="indicators-grid">
+                <div class="indicator-card">
+                    <h4>🌾 Grain Yield</h4>
+                    <p>Production metrics and yield gap analysis across regions and varieties</p>
+                </div>
+                <div class="indicator-card">
+                    <h4>🧪 Fertilizer Efficiency</h4>
+                    <p>Nutrient use efficiency and input optimization strategies</p>
+                </div>
+                <div class="indicator-card">
+                    <h4>🧬 Genetic Diversity</h4>
+                    <p>Variety distribution and biodiversity indicators for sustainable farming</p>
+                </div>
+                <div class="indicator-card">
+                    <h4>🌱 Crop Care Practices</h4>
+                    <p>Agricultural management techniques and farming methodologies</p>
+                </div>
+                <div class="indicator-card">
+                    <h4>👩‍🌾 Gender Participation</h4>
+                    <p>Women's involvement in rice production and decision-making processes</p>
+                </div>
+                <div class="indicator-card">
+                    <h4>📊 Economic Metrics</h4>
+                    <p>Cost-benefit analysis and socio-economic impact assessments</p>
+                </div>
+            </div>
+
+            <h3>Data Processing Pipeline</h3>
+            <div class="data-pipeline">
+                <div class="pipeline-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h4>Data Collection</h4>
+                        <p>Aggregation of rice survey data from LOOP and other key agricultural studies spanning decades of research.</p>
+                    </div>
+                </div>
+                <div class="pipeline-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h4>Ontology Mapping</h4>
+                        <p>Standardization using SEOnt socio-economic ontology to map variables across diverse datasets.</p>
+                    </div>
+                </div>
+                <div class="pipeline-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h4>AWS Processing</h4>
+                        <p>ETL pipeline using AWS Glue and Athena for data transformation and structured schema creation.</p>
+                    </div>
+                </div>
+                <div class="pipeline-step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h4>Visualization</h4>
+                        <p>Qlik Sense dashboard development for interactive analytics and stakeholder testing.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="outcomes" class="section outcomes">
+            <h2>Key Achievements & Impact</h2>
+            
+            <h3>🚀 Platform Development Success</h3>
+            <ul style="margin: 1rem 0; padding-left: 2rem;">
+                <li><strong>Five Surveys Integrated:</strong> LOOP survey and others loaded into AWS Athena with Qlik Sense visualization</li>
+                <li><strong>15 Indicators Mapped:</strong> Comprehensive analytics including yield, fertilizer efficiency, and gender participation</li>
+                <li><strong>Functional Dashboard:</strong> Fully operational user interface tested by stakeholders across research institutions</li>
+                <li><strong>Ontology Implementation:</strong> SEOnt-based standardization enabling seamless dataset integration</li>
+            </ul>
+
+            <h3>💡 Capacity Building Excellence</h3>
+            <p><strong>100% Team Training Achievement:</strong> Complete AWS cloud training delivered through webinars, online summits, and tailored sessions for IRRI, PhilRice, and international partners.</p>
+            <p><strong>Knowledge Transfer:</strong> 25+ participants trained in cloud technologies and analytics, building local expertise in agricultural data science.</p>
+            
+            <h3>🌐 Public Engagement Impact</h3>
+            <p>Strong visibility through press releases, online events, and CGIAR network integration, driving interest across academic and policy audiences for evidence-based agricultural decision-making.</p>
+
+            <div class="covid-adaptation">
+                <h4>🦠 COVID-19 Resilience</h4>
+                <p>Successfully adapted project delivery during pandemic disruptions, completing data pipeline and interface development while transitioning from planned MSc/PhD recruitments to consultancy models with SENTI AI partnership.</p>
+            </div>
+        </section>
+
+        <section id="partners" class="section">
+            <h2>Strategic Partnership Network</h2>
+            <p>Led by the International Rice Research Institute (IRRI) with comprehensive agricultural research and technology partnerships:</p>
+            
+            <div class="partners-grid">
+                <div class="partner-card lead">
+                    <h3>IRRI</h3>
+                    <p>International Rice Research Institute<br><strong>Lead Organization</strong></p>
+                </div>
+                <div class="partner-card lead">
+                    <h3>DOST-ASTI</h3>
+                    <p>Advanced Science and Technology Institute<br><strong>Philippines</strong></p>
+                </div>
+                <div class="partner-card">
+                    <h3>Amazon Web Services</h3>
+                    <p>Cloud Infrastructure<br>Partner</p>
+                </div>
+                <div class="partner-card">
+                    <h3>UPLB</h3>
+                    <p>University of the Philippines<br>Los Baños</p>
+                </div>
+                <div class="partner-card">
+                    <h3>SEARCA</h3>
+                    <p>Southeast Asian Regional Center<br>for Agriculture</p>
+                </div>
+                <div class="partner-card">
+                    <h3>SENTI AI</h3>
+                    <p>Data Infrastructure<br>Optimization Partner</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section challenges">
+            <h2>Challenges & Future Directions</h2>
+            
+            <h3>⚠️ Implementation Challenges</h3>
+            <ul style="margin: 1rem 0; padding-left: 2rem;">
+                <li><strong>COVID-19 Impact:</strong> Pandemic disrupted planned MSc and PhD recruitments, requiring consultancy adaptations</li>
+                <li><strong>Development Timeline:</strong> ETL development extended due to restructuring and SENTI AI partnership onboarding</li>
+                <li><strong>Engagement Limitations:</strong> In-person conferences and events shifted to online formats affecting outreach</li>
+                <li><strong>Resource Constraints:</strong> Academic recruitment challenges required alternative staffing strategies</li>
+            </ul>
+
+            <h3>🚀 Expansion & Innovation Plans</h3>
+            <p><strong>Multi-Crop Platform:</strong> Expand beyond rice to support other crops and broader agricultural research applications.</p>
+            <p><strong>Real-Time Integration:</strong> Incorporate IoT sensors and CAPI survey inputs for continuous data updating and live analytics.</p>
+            <p><strong>NREN Deployment:</strong> Promote platform usage in TEIN-connected universities through PREGINET training and regional deployment.</p>
+            <p><strong>API Development:</strong> Future public API and download capabilities for offline indicator dataset extraction and research use.</p>
+        </section>
+
+        <section id="future" class="section">
+            <h2>Sustainable Development Goals</h2>
+            <p>This agricultural data platform directly supports global food security and sustainable development objectives:</p>
+            <div class="sdg-badges">
+                <div class="sdg-badge">SDG 2: Zero Hunger</div>
+                <div class="sdg-badge">SDG 9: Innovation & Infrastructure</div>
+                <div class="sdg-badge">SDG 12: Responsible Production</div>
+                <div class="sdg-badge">SDG 17: Partnerships for Goals</div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Project Details</h3>
+                    <p>Category: WP4 (Work Package 4)</p>
+                    <p>Call: 3rd Call</p>
+                    <p>Focus: Agricultural Data Analytics</p>
+                    <p>Lead: Philippines 🇵🇭 (IRRI)</p>
+                    <p>Platform: AWS Cloud + Qlik Sense</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Technology Stack</h3>
+                    <p>• AWS S3 Data Lake</p>
+                    <p>• AWS Glue ETL Pipeline</p>
+                    <p>• AWS Athena Analytics</p>
+                    <p>• Qlik Sense Dashboards</p>
+                    <p>• SEOnt Ontology Mapping</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Global Food Security</h3>
+                    <p>Revolutionizing rice research through cloud-powered analytics, providing researchers and policymakers with standardized data to address food security challenges across Asia and beyond.</p>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 RICESTATS DATABASE Project. Led by IRRI with DOST-ASTI and AWS. Supported by European Union, TEIN CC, and Asia Connect.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add scroll effect to navigation
+        window.addEventListener('scroll', function() {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 100) {
+                nav.style.boxShadow = '0 4px 15px rgba(0,0,0,0.2)';
+            } else {
+                nav.style.boxShadow = 'none';
+            }
+        });
+
+        // Animate stat numbers on scroll
+        const observerOptions = {
+            threshold: 0.5,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const statNumbers = entry.target.querySelectorAll('.stat-number');
+                    statNumbers.forEach(stat => {
